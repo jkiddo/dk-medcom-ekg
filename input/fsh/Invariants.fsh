@@ -15,3 +15,23 @@ Invariant: medcom-canonical-fixed-major
 Description: "If a version is present in the canonical, MAJOR SHALL be a fixed value."
 Severity: #error
 Expression: "matches('^.*[|]2[.].*$')"
+
+Invariant: medcom-ekg-positive-sample-period
+Description: "The interval between ECG samples must be greater than zero milliseconds."
+Severity: #error
+Expression: "$this > 0"
+
+Invariant: medcom-ekg-waveform-period
+Description: "Numerical ECG waveforms require an effectivePeriod with a start and an end after the start."
+Severity: #error
+Expression: "component.empty() or (effective.ofType(Period).start.exists() and effective.ofType(Period).end.exists() and effective.ofType(Period).end > effective.ofType(Period).start)"
+
+Invariant: medcom-ekg-unique-leads
+Description: "Each numerical ECG lead may occur only once."
+Severity: #error
+Expression: "component.code.coding.code.isDistinct()"
+
+Invariant: medcom-ekg-common-sample-period
+Description: "All numerical ECG leads must have the same sampling interval."
+Severity: #error
+Expression: "component.value.ofType(SampledData).period.distinct().count() <= 1"

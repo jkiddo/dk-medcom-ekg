@@ -1,0 +1,67 @@
+name: Verify numerical ECG examples
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-ecg-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Build and verify numerical ECG examples
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Cache FHIR dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.fhir/packages
+          key: ${{ runner.os }}-fhir-${{ hashFiles('sushi-config.yaml') }}
+
+      - name: Install SUSHI
+        run: npm install --global fsh-sushi@3.20.0
+
+      - name: Compile profiles and examples
+        run: sushi build --snapshot . 2>&1 | tee sushi-build.log
+
+      - name: Verify numerical examples
+        # This script uses only the Python standard library. Check the committed
+        # examples and PDF without regenerating them or hiding stale inputs.
+        run: python scripts/check-numerical-examples.py 2>&1 | tee numerical-verification.log
+
+      - name: Upload generated resources and verification logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: numerical-ecg-verification
+          path: |
+            fsh-generated/resources/
+            sushi-build.log
+            numerical-verification.log
+          if-no-files-found: ignore
+          retention-days: 14

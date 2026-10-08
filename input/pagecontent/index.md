@@ -26,6 +26,12 @@ The EKG Recording standard follows the general MedCom FHIR Document model.
 ### EKG Recording in FHIR
 The IG is designed to represent a complete EKG recording in FHIR, provided as a PDF document with the option to add a note. This note will typically provide guidance to the recipient regarding conditions or details that may have influenced the EKG recording.
 
+The Observation may additionally include numerical ECG waveforms as optional
+per-lead `SampledData` components. The PDF remains required, and PDF-only recordings
+remain supported. See the [Observation guidance](StructureDefinition-medcom-ekg-recording-observation.html)
+for sample scaling, lead codes, synchronized timing, and the relationship to the
+HL7 PoCD and PHD models.
+
 #### Terminology IG and metadata IG
 In the [MedCom Terminology IG](http://medcomfhir.dk/ig/terminology/) all referenced MedCom Terminology code systems and value sets developed by MedCom can be found.
 

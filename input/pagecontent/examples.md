@@ -8,4 +8,33 @@ The example includes a MedCom FHIR EKG Recording Document Bundle with the follow
 
 The example also includes the clinical note as a string, demonstrating which types of formatting and characters are permitted.
 
-Find the [example here](Bundle-0a74554f-ded3-4bc7-bef1-535699565c5a.html) in both JSON and XML.
+Find the [PDF-only example here](Bundle-0a74554f-ded3-4bc7-bef1-535699565c5a.html) in both JSON and XML.
+
+## Examples with numerical samples
+
+The additional examples contain synthetic test signals, not patient recordings.
+Every supplied lead has **500 explicit samples**, separated by **2 ms (500 Hz)**,
+covering one second. There are no abbreviated arrays or placeholder values.
+The origin is 0 mV and the factor is 0.001, so each stored unit represents 0.001 mV.
+
+- [Twelve-lead Observation](Observation-66d6516f-382d-442f-993f-9eb96f0700f6.html):
+  contains all 6,000 sample values for I, II, III, aVR, aVL, aVF, and V1 through V6,
+  together with the required PDF.
+- [Complete twelve-lead document Bundle](Bundle-83f3b8a2-a94d-4221-aacf-13e72e534cf2.html):
+  includes that Observation, its Composition, the test patient, and the organization.
+- [Three-lead numerical subset](Observation-db5dd8eb-0432-4745-9522-a48932122faf.html):
+  includes all 1,500 samples for I, II, and III. Its PDF still shows all twelve leads;
+  the other nine leads are not supplied as numerical data.
+
+The [synthetic PDF](ekg-synthetic-waveforms.pdf) is plotted directly from the same
+arrays, at 25 mm/s and 10 mm/mV. These short examples illustrate encoding only and
+do not establish a clinical recording duration or a diagnostic sampling requirement.
+
+Source: `input/fsh/ExamplesNumerical.fsh`. Regenerate the FSH examples and PDF with
+`python3 scripts/generate-numerical-examples.py` (requires `reportlab`), then run
+`sushi build -s .` to produce JSON resources. The existing PDF-only example is retained
+to demonstrate that numerical data remains optional.
+
+After compilation, run `python3 scripts/check-numerical-examples.py` to check all
+sample counts, lead identities, scaling, timing, derived limb relationships,
+embedded PDF bytes, and references within the document Bundle.

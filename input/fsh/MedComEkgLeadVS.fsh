@@ -1,0 +1,16 @@
+ValueSet: MedComEkgLeadVS
+Id: medcom-ekg-lead-valueset
+Title: "MedCom ECG waveform leads"
+Description: "IEEE 11073 MDC electrical-potential codes for the twelve standard ECG leads."
+* urn:iso:std:iso:11073:10101#131329 "MDC_ECG_ELEC_POTL_I"
+* urn:iso:std:iso:11073:10101#131330 "MDC_ECG_ELEC_POTL_II"
+* urn:iso:std:iso:11073:10101#131389 "MDC_ECG_ELEC_POTL_III"
+* urn:iso:std:iso:11073:10101#131390 "MDC_ECG_ELEC_POTL_AVR"
+* urn:iso:std:iso:11073:10101#131391 "MDC_ECG_ELEC_POTL_AVL"
+* urn:iso:std:iso:11073:10101#131392 "MDC_ECG_ELEC_POTL_AVF"
+* urn:iso:std:iso:11073:10101#131331 "MDC_ECG_ELEC_POTL_V1"
+* urn:iso:std:iso:11073:10101#131332 "MDC_ECG_ELEC_POTL_V2"
+* urn:iso:std:iso:11073:10101#131333 "MDC_ECG_ELEC_POTL_V3"
+* urn:iso:std:iso:11073:10101#131334 "MDC_ECG_ELEC_POTL_V4"
+* urn:iso:std:iso:11073:10101#131335 "MDC_ECG_ELEC_POTL_V5"
+* urn:iso:std:iso:11073:10101#131336 "MDC_ECG_ELEC_POTL_V6"

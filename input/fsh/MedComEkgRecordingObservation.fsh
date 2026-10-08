@@ -43,6 +43,30 @@ Description: "Observation profile intended to be used in MedCom's Ekg Recording 
 * extension[valueAttachment].valueAttachment.title 1..1 MS
 * extension[valueAttachment].valueAttachment.title = "Elektrokardiogram-12-aflednings"
 
+// Optional numerical representation of the same recording as the required PDF.
+// One synchronized, regularly sampled signal per lead; PDF-only instances remain valid.
+* component 0..12
+* component ^short = "Optional numerical ECG waveforms, one component per lead"
+* component ^definition = "Optional synchronized ECG samples from the recording represented by the PDF. All supplied leads start at effectivePeriod.start, have the same sampling interval and sample count, and cover the effectivePeriod. A subset of the twelve standard leads may be supplied; omitted leads are not available as numerical data."
+* component.code from MedComEkgLeadVS (required)
+* component.code.coding 1..1
+* component.code.coding.system 1..1
+* component.code.coding.system = "urn:iso:std:iso:11073:10101" (exactly)
+* component.code.coding.code 1..1
+* component.value[x] 1..1
+* component.value[x] only SampledData
+* component.valueSampledData.origin.value 1..1
+* component.valueSampledData.origin.system 1..1
+* component.valueSampledData.origin.system = "http://unitsofmeasure.org" (exactly)
+* component.valueSampledData.origin.code 1..1
+* component.valueSampledData.origin.code = #mV (exactly)
+* component.valueSampledData.origin.unit = "mV" (exactly)
+* component.valueSampledData.period obeys medcom-ekg-positive-sample-period
+* component.valueSampledData.dimensions = 1 (exactly)
+* component.valueSampledData.data 1..1
+* component.valueSampledData.data ^short = "Space-separated samples; amplitude in mV = origin.value + factor * sample (factor defaults to 1)"
+* obeys medcom-ekg-waveform-period and medcom-ekg-unique-leads and medcom-ekg-common-sample-period
+
 * insert ProducerShallPutInNarrative(effectiveDateTime)
 * insert ProducerShallPutInNarrative(effectivePeriod.start)
 * insert ProducerShallPutInNarrative(effectivePeriod.end)
